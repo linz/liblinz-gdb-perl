@@ -1,0 +1,21 @@
+Source: liblinz-gdb-perl
+Section: perl
+Priority: optional
+Maintainer: Chris Crook <ccrook@linz.govt.nz>
+Build-Depends: debhelper (>= 8.0.0)
+Standards-Version: 3.9.2
+Homepage: 
+
+Package: liblinz-gdb-perl
+Architecture: all
+Depends: ${misc:Depends},
+    libdbd-sqlite3-perl,
+    libdbi-perl,
+    libjson-perl,
+Description: Perl module get LINZ GDB mark data
+ LINZ::Geodetic::GDB module
+ .
+ Retrieve mark summary information from the LINZ online
+ geodetic database.
+
+    

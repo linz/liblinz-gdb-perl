@@ -1,0 +1,5 @@
+liblinz-gdb-perl (1.0.0-1) trusty; urgency=medium
+
+  * Initial version
+
+ -- Chris Crook <ccrook@linz.govt.nz>  Tue, 17 Dec 2015 09:51:08 +1300
