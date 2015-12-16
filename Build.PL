@@ -13,10 +13,10 @@ my $requires = {
 };
 
 my $build =  Module::Build->new(
-    module_name        => 'LINZ::Geodetic',
+    module_name        => 'LINZ::GDB',
     license            => 'bsd',
     dist_author        => 'LINZ',
-    dist_version_from  => 'lib/LINZ/Geodetic/GDB.pm',
+    dist_version_from  => 'lib/LINZ/GDB.pm',
     dist_abstract      => 'Module to retrieve mark information from the geodetic database',
     requires           => $requires,
     create_makefile_pl => 'small',

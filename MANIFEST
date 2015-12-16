@@ -1,5 +1,4 @@
 lib
 lib/LINZ
-lib/LINZ/Geodetic
-lib/LINZ/Geodetic/GDB.pm
+lib/LINZ/GDB.pm
 Build.PL

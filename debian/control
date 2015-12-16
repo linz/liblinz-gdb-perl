@@ -13,7 +13,7 @@ Depends: ${misc:Depends},
     libdbi-perl,
     libjson-perl,
 Description: Perl module get LINZ GDB mark data
- LINZ::Geodetic::GDB module
+ LINZ::GDB module
  .
  Retrieve mark summary information from the LINZ online
  geodetic database.

@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 
-=head1 Package LINZ::Geodetic::GDB
+=head1 Package LINZ::GDB
 
 Module to obtain summary mark information from the LINZ online 
 geodetic database.  Retrieves and decodes JSON data for a mark 
@@ -8,7 +8,7 @@ using the mode=js option on the geodetic database.
 
 Synopsis:
 
-    use LINZ::Geodetic::GDB qw/SetupMarkCache GetGdbMark/;
+    use LINZ::GDB qw/SetupMarkCache GetGdbMark/;
     
     # Initiallize the module to use a persistent local mark cache
     SetupMarkCache();
@@ -26,7 +26,7 @@ Synopsis:
 
 use strict;
 
-package LINZ::Geodetic::GDB;
+package LINZ::GDB;
 
 use base qw(Exporter);
 use DBI;
@@ -48,7 +48,7 @@ our $cacheExpiry=6;
 our $markCache={};
 our $debugGdb=0;
 
-=head2 LINZ::Geodetic::GDB::SetupGdbCache(filename=>'~/.gdbjsoncache',useCache=>1,expiryHours=>6)
+=head2 LINZ::GDB::SetupGdbCache(filename=>'~/.gdbjsoncache',useCache=>1,expiryHours=>6)
 
 Set up the GDB module to cache mark data in an SQLite file store.  
 
@@ -108,7 +108,7 @@ sub _saveToFileCache
 }
 
 
-=head2 my $markdata=LINZ::Geodetic::GDB::GetGdbMark($code)
+=head2 my $markdata=LINZ::GDB::GetGdbMark($code)
 
 Retrieve information for a geodetic mark. The data is retrieved as a 
 hash which is built from the JSON returned by the geodetic 
