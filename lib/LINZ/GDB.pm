@@ -31,11 +31,11 @@ package LINZ::GDB;
 use base qw(Exporter);
 use DBI;
 use JSON;
-use LWP::Simple;
+use LWP::UserAgent;
 use Carp;
 
 our @EXPORT=qw(
-   SetupGdbCache
+   SetGdbOptions
    GetGdbMark
    );
 
@@ -47,20 +47,49 @@ our $useFileCache=0;
 our $cacheExpiry=6;
 our $markCache={};
 our $debugGdb=0;
+our $timeout=15;
+our $gdbfailed=0;
 
-=head2 LINZ::GDB::SetupGdbCache(filename=>'~/.gdbjsoncache',useCache=>1,expiryHours=>6)
+=head2 LINZ::GDB::SetGdbOptions(%options)
 
-Set up the GDB module to cache mark data in an SQLite file store.  
+Set up the GDB module to cache mark data in an SQLite file store, as well as other
+options
+
+Options can include:
+
+=over
+
+=item useCache
+
+If true then a persistent file cache will be used
+
+=item filename
+
+The name of the cache file for storing.  Can include a leading ~ which is replaced
+with the HOME, APPDATA, or TEMP environment variable.
+
+=item expiryHours
+
+The time in hours for which cached mark data is considered valid
+
+=item timeout
+
+The timout in seconds for URL requests.  Once a request has failed no other 
+requests are attempted.
+
+=back
 
 =cut
 
-sub SetupGdbCache
+sub SetGdbOptions
 {
     my(%options)=@_;
     $cacheFile=$options{filename} || $cacheFile;
-    $cacheFile=~s/^\~/$ENV{HOME}/;
+    my $home=$ENV{HOME} || $ENV{APPDATA} || $ENV{TEMP};
+    $cacheFile=~s/^\~/$home/;
     $cacheExpiry=$options{expiryHours} || $cacheExpiry;
     $useFileCache=exists $options{useCache} ? $options{useCache} : 1;
+    $timeout=exists $options{timeout} ? $options{timeout}+0 : $timeout;
 }
 
 sub _getFromFileCache
@@ -133,14 +162,28 @@ sub GetGdbMark
     my $markdata=_getFromFileCache($code);
     if( ! $markdata )
     {
-        my $url=$gdburl;
-        $url =~ s/\{code\}/$code/g;
-        print "Retrieving $url\n" if $debugGdb;
-        $markdata=get($url);
-        croak("Cannot connect to geodetic database\n") if ! defined $markdata;
-        $markdata =~ s/^\s*//;
-        $markdata =~ s/\s*$//;
-        _saveToFileCache($code,$markdata);
+        if( ! $gdbfailed )
+        {
+            my $url=$gdburl;
+            $url =~ s/\{code\}/$code/g;
+            print "Retrieving $url\n" if $debugGdb;
+            my $ua=LWP::UserAgent->new;
+            $ua->timeout($timeout);
+            $ua->env_proxy;
+            my $response=$ua->get($url);
+            if( $response->is_success )
+            {
+                $markdata=$response->decoded_content;
+                $markdata =~ s/^\s*//;
+                $markdata =~ s/\s*$//;
+                _saveToFileCache($code,$markdata);
+            }
+            else
+            {
+                $gdbfailed=1;
+            }
+        }
+        croak("Cannot connect to geodetic database\n") if $gdbfailed;
     }
     croak("$code is not an existing geodetic mark\n") if $markdata eq 'null';
     my $mark=decode_json($markdata);
