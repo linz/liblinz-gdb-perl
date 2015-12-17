@@ -8,10 +8,10 @@ using the mode=js option on the geodetic database.
 
 Synopsis:
 
-    use LINZ::GDB qw/SetupMarkCache GetGdbMark/;
+    use LINZ::GDB qw/SetupGdbCache GetGdbMark/;
     
     # Initiallize the module to use a persistent local mark cache
-    SetupMarkCache();
+    SetupGdbCache();
 
     # Retrieve the data for mark 'ABCD'
     my $code='ABCD';
