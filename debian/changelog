@@ -1,3 +1,10 @@
+liblinz-gdb-perl (1.2.0-1) trusty; urgency=medium
+
+  * Fixing documentation
+  * Improved options handling and documentation
+
+ -- Chris Crook <ccrook@linz.govt.nz>  Fri, 18 Dec 2015 11:17:07 +1300
+
 liblinz-gdb-perl (1.1.0-1) trusty; urgency=medium
 
   * Shifting GDB module to LINZ package rather than LINZ::Geodetic
