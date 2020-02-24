@@ -18,7 +18,7 @@ Synopsis:
     my $markdata=GetGdbMark($code);
 
     # Extract information from the mark
-    my $coord=$markdata->{official_coordinate};
+    my $coord=$markdata->{coordinate};
     ...
 
 
@@ -41,7 +41,7 @@ our @EXPORT=qw(
 
 our $VERSION=1.0.0;
 
-our $gdburl='http://www.linz.govt.nz/gdb?mode=js&code={code}';
+our $gdburl='https://www.geodesy.linz.govt.nz/api/gdbweb/mark?&code={code}';
 our $cacheFile="~/.gdbjsoncache";
 our $useFileCache=0;
 our $cacheExpiry=6;
